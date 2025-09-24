@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAFTA Carousel Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #111827;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #fff;
+    }
+    .carousel {
+      width: 1080px;
+      height: 1080px;
+      background: linear-gradient(135deg, #1e3a8a, #9333ea);
+      border-radius: 30px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 60px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .card {
+      background: rgba(255,255,255,0.9);
+      color: #111;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    h1 {
+      font-size: 58px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #1e3a8a;
+    }
+    h2 {
+      font-size: 44px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #9333ea;
+    }
+    p, li {
+      font-size: 28px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    ul {
+      text-align: left;
+      padding-left: 20px;
+    }
+    footer {
+      font-size: 22px;
+      font-weight: 600;
+      background: rgba(0,0,0,0.4);
+      padding: 10px 30px;
+      border-radius: 50px;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    button {
+      background: #9333ea;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #6d28d9;
+    }
+    .counter {
+      margin: 15px 0;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="slide" class="carousel">
+    <div id="content" class="card">
+      <!-- First slide loads by default -->
+      <h1>📦 Documents Required for SAFTA Certificate</h1>
+      <h2>Easy Guide for Exporters</h2>
+      <p>Includes checklist before & after shipment, timelines, and expert contact info.</p>
+    </div>
+    <footer>🌐 IMPEX SOLUTION</footer>
+  </div>
+
+  <div class="counter" id="counter">1 / 5</div>
+
+  <div class="controls">
+    <button onclick="prevSlide()">⬅ Prev</button>
+    <button onclick="downloadSlide()">💾 Download Slide</button>
+    <button onclick="nextSlide()">Next ➡</button>
+  </div>
+
+  <script>
+    const slides = [
+      `
+        <h1>📦 Documents Required for SAFTA Certificate</h1>
+        <h2>Easy Guide for Exporters</h2>
+        <p>Includes checklist before & after shipment, timelines, and expert contact info.</p>
+      `,
+      `
+        <h2>📑 Before Shipment Checklist</h2>
+        <ul>
+          <li>✅ Import Export Code (IEC)</li>
+          <li>✅ Commercial Invoice (USD, HS Code)</li>
+          <li>✅ Packing List (HS Code)</li>
+          <li>✅ Cost Sheet (Letterhead, prescribed format)</li>
+          <li>✅ Raw Material Purchase Bills (attested)</li>
+          <li>✅ Purchase Bill for inputs/consumables</li>
+          <li>✅ Original Cost Sheet (“Rules of Origin”)</li>
+          <li>✅ Raw Material Bills (origin proof)</li>
+          <li>✅ Purchase Order / LC / Contract</li>
+          <li>✅ Digital Signature Certificate (DSC)</li>
+          <li>✅ Registered Email & Mobile (DGFT portal)</li>
+        </ul>
+      `,
+      `
+        <h2>🚢 After Shipment Checklist</h2>
+        <ul>
+          <li>✅ Shipping Bill</li>
+          <li>✅ Bill of Lading / Airway Bill / LR Receipt</li>
+          <li>✅ Exporter Declaration on SAFTA origin</li>
+          <li>✅ Retrospective application (within 45 days)</li>
+        </ul>
+      `,
+      `
+        <h2>📅 When to Apply</h2>
+        <ul>
+          <li>📌 Certificate issued 2-3 days after application or at export</li>
+          <li>📌 Retrospective available up to 45 days</li>
+          <li>📌 Always check DGFT portal for updates</li>
+        </ul>
+      `,
+      `
+        <h2>📞 Expert Export Support</h2>
+        <p>
+          Bharat Parekh | <strong>IMPEX SOLUTION</strong> <br><br>
+          GSTIN: 27AABPP8518M1Z7 <br>
+          PAN: AABPP8518M <br><br>
+          📲 +91 98200 34262 <br>
+          ✉️ bharat@impexsolution.net <br>
+          🌐 www.impexsolution.net <br><br>
+          Mumbai HQ & branch addresses
+        </p>
+      `
+    ];
+
+    let current = 0;
+
+    function showSlide(index) {
+      document.getElementById("content").innerHTML = slides[index];
+      document.getElementById("counter").textContent = `${index + 1} / ${slides.length}`;
+    }
+
+    function nextSlide() {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    }
+
+    function prevSlide() {
+      current = (current - 1 + slides.length) % slides.length;
+      showSlide(current);
+    }
+
+    function downloadSlide() {
+      const slide = document.getElementById("slide");
+      html2canvas(slide).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `safta-slide-${current+1}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script>
+
+</body>
+</html>
