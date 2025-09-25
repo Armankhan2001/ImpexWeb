@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Link Extractor & Downloader</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+textarea { width: 100%; height: 200px; margin-bottom: 10px; }
+button { padding: 10px 20px; margin-bottom: 20px; cursor: pointer; }
+a { display: block; margin: 5px 0; color: blue; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h2>Paste HTML Code Below</h2>
+<textarea id="htmlInput" placeholder="Paste your HTML code here..."></textarea>
+<br>
+<button onclick="extractLinks()">Extract Image Links</button>
+
+<h3>Extracted Image Links</h3>
+<div id="linksContainer"></div>
+
+<script>
+function extractLinks() {
+    const html = document.getElementById('htmlInput').value;
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    const imgs = tempDiv.querySelectorAll('img');
+    const container = document.getElementById('linksContainer');
+    container.innerHTML = '';
+
+    if(imgs.length === 0){
+        container.innerHTML = '<p>No images found!</p>';
+        return;
+    }
+
+    imgs.forEach((img, index) => {
+        const url = img.src;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.textContent = url;
+        container.appendChild(a);
+    });
+}
+</script>
+
+</body>
+</html>
