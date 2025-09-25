@@ -15,9 +15,9 @@
       padding: 20px;
       color: #fff;
     }
+
+    /* Base slide design */
     .carousel {
-      width: 1080px;
-      height: 1080px;
       background: linear-gradient(135deg, #1e3a8a, #9333ea);
       border-radius: 30px;
       box-shadow: 0 12px 30px rgba(0,0,0,0.3);
@@ -26,50 +26,81 @@
       justify-content: space-between;
       align-items: center;
       text-align: center;
-      padding: 60px;
       box-sizing: border-box;
       margin-bottom: 20px;
       position: relative;
+      overflow: hidden;
+      padding: 60px;
     }
+
+    /* Post (Square 1:1) */
+    .post {
+      width: 1080px;
+      height: 1080px;
+    }
+
+    /* Reel/Story (Vertical 9:16) */
+    .reel {
+      width: 1080px;
+      height: 1920px;
+    }
+
+    /* Card (Content Box) */
     .card {
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.92);
       color: #111;
       border-radius: 20px;
-      padding: 40px;
-      width: 100%;
+      padding: 50px;
+      width: 95%;
       max-width: 900px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
     }
+
+    /* Typography scaling */
     h1 {
-      font-size: 58px;
       font-weight: 800;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       color: #1e3a8a;
     }
     h2 {
-      font-size: 44px;
       font-weight: 700;
       margin-bottom: 20px;
       color: #9333ea;
     }
     p, li {
-      font-size: 28px;
-      line-height: 1.6;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     ul {
       text-align: left;
-      padding-left: 20px;
+      padding-left: 25px;
     }
+
+    /* Post font sizes */
+    .post h1 { font-size: 52px; }
+    .post h2 { font-size: 42px; }
+    .post p, .post li { font-size: 26px; line-height: 1.5; }
+
+    /* Reel font sizes (bigger for readability) */
+    .reel h1 { font-size: 72px; }
+    .reel h2 { font-size: 58px; }
+    .reel p, .reel li { font-size: 34px; line-height: 1.6; }
+
     footer {
       font-size: 22px;
       font-weight: 600;
-      background: rgba(0,0,0,0.4);
-      padding: 10px 30px;
+      background: rgba(0,0,0,0.5);
+      padding: 14px 40px;
       border-radius: 50px;
+      margin-top: 30px;
     }
+
     .controls {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
     }
@@ -80,25 +111,31 @@
       padding: 14px 28px;
       border-radius: 50px;
       cursor: pointer;
-      font-size: 18px;
+      font-size: 16px;
       transition: 0.3s;
     }
-    button:hover {
-      background: #6d28d9;
-    }
+    button:hover { background: #6d28d9; }
+
     .counter {
       margin: 15px 0;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: bold;
       color: #fff;
+    }
+
+    /* Preview scaling for smaller browser windows */
+    @media (max-width: 1200px) {
+      .carousel {
+        transform: scale(0.6);
+        transform-origin: top center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="slide" class="carousel">
+  <div id="slide" class="carousel post">
     <div id="content" class="card">
-      <!-- First slide loads by default -->
       <h1>📦 Documents Required for SAFTA Certificate</h1>
       <h2>Easy Guide for Exporters</h2>
       <p>Includes checklist before & after shipment, timelines, and expert contact info.</p>
@@ -110,8 +147,9 @@
 
   <div class="controls">
     <button onclick="prevSlide()">⬅ Prev</button>
-    <button onclick="downloadSlide()">💾 Download Slide</button>
     <button onclick="nextSlide()">Next ➡</button>
+    <button onclick="downloadSlide()">💾 Download</button>
+    <button onclick="toggleFormat()">📱 Switch Post/Reel</button>
   </div>
 
   <script>
@@ -169,6 +207,7 @@
     ];
 
     let current = 0;
+    let isReel = false;
 
     function showSlide(index) {
       document.getElementById("content").innerHTML = slides[index];
@@ -187,12 +226,18 @@
 
     function downloadSlide() {
       const slide = document.getElementById("slide");
-      html2canvas(slide).then(canvas => {
+      html2canvas(slide, {scale:2}).then(canvas => {
         const link = document.createElement("a");
-        link.download = `safta-slide-${current+1}.png`;
-        link.href = canvas.toDataURL();
+        link.download = `safta-${isReel ? "reel" : "post"}-slide-${current+1}.png`;
+        link.href = canvas.toDataURL("image/png");
         link.click();
       });
+    }
+
+    function toggleFormat() {
+      const slide = document.getElementById("slide");
+      isReel = !isReel;
+      slide.className = `carousel ${isReel ? "reel" : "post"}`;
     }
   </script>
 
